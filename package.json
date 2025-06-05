@@ -14,9 +14,8 @@
     "heroku-postbuild": "npm install && npm run build"
   },
   "engines": {
-    "node": "20.11.1",
-    "npm": "10.2.4"
-  },
+    "node": "20.11.1"
+ },
   "dependencies": {
     "@nestjs/cli": "^10.0.0",
     "@nestjs/common": "^10.0.0",
