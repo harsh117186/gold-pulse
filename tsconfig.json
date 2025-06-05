@@ -17,28 +17,17 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "jest"],
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "paths": {
-      "*": ["node_modules/*"]
-    },
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "resolveJsonModule": true
   },
   "include": [
-    "src/**/*",
-    "test/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.build.json"
-    }
+    "dist",
+    "test",
+    "**/*spec.ts"
   ]
 }

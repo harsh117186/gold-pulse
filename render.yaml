@@ -13,17 +13,9 @@ services:
       rm -rf .npm && \
       npm cache clean --force && \
       echo "Installing dependencies..." && \
-      npm install --legacy-peer-deps --verbose && \
-      echo "Installing dev dependencies..." && \
-      npm install --legacy-peer-deps --save-dev --verbose && \
-      echo "Installing type definitions..." && \
-      npm install --save-dev @types/node@20.10.4 @types/jest@29.5.11 --verbose && \
-      echo "Verifying TypeScript installation..." && \
-      npx tsc --version && \
-      echo "Listing node_modules/@types..." && \
-      ls -la node_modules/@types && \
+      npm install --legacy-peer-deps && \
       echo "Building application..." && \
-      NODE_OPTIONS="--max-old-space-size=2048" npm run build
+      npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
