@@ -3,23 +3,8 @@ services:
     name: gold-pulse
     env: node
     plan: free
-    buildCommand: npm cache clean --force && rm -rf node_modules && npm install --legacy-peer-deps && npm install -g @nestjs/cli && npm run build
+    buildCommand: npm install && npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3000
-    healthCheckPath: /
-    autoDeploy: true
-    buildFilter:
-      paths:
-        - package.json
-        - package-lock.json
-        - src/**
-        - tsconfig.json
-        - nest-cli.json
-    disk:
-      name: gold-pulse-cache
-      mountPath: /opt/render/project/src
-      sizeGB: 1 
