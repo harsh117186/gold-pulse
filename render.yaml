@@ -3,7 +3,7 @@ services:
     name: gold-pulse
     env: node
     plan: free
-    nodeVersion: 18.17.0
+    nodeVersion: 20.11.1
     buildCommand: |
       echo "Starting build process..." && \
       echo "Current Node version:" && node -v && \
@@ -17,7 +17,7 @@ services:
       echo "Installing dependencies..." && \
       npm install --no-package-lock && \
       echo "Building application..." && \
-      NODE_OPTIONS="--max-old-space-size=2048" nest build --webpack false
+      NODE_OPTIONS="--max-old-space-size=2048" npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
