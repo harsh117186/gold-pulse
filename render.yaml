@@ -4,10 +4,9 @@ services:
     env: node
     plan: free
     buildCommand: |
-      echo "Step 1: Installing dependencies..." && \
-      npm install --no-audit --no-fund && \
-      echo "Step 2: Running build..." && \
-      npm run build
+      npm install -g @nestjs/cli && \
+      npm install && \
+      nest build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
