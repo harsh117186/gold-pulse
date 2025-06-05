@@ -4,13 +4,23 @@ services:
     env: node
     plan: free
     buildCommand: |
-      echo "Cleaning up..." && \
-      rm -rf node_modules package-lock.json && \
-      echo "Installing dependencies..." && \
+      echo "Starting build process..." && \
+      npm cache clean --force && \
       npm install --no-audit --no-fund --prefer-offline && \
-      echo "Building..." && \
-      npm run build
+      npm run build && \
+      echo "Build completed successfully!"
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 3000
+    healthCheckPath: /
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - package.json
+        - src/**
+        - tsconfig.json
+        - nest-cli.json
+        - webpack.config.js
