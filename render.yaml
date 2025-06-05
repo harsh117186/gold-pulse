@@ -13,9 +13,9 @@ services:
       rm -rf .npm && \
       npm cache clean --force && \
       echo "Installing dependencies..." && \
-      npm install --verbose && \
-      echo "Listing node_modules contents..." && \
-      ls -la node_modules/@nestjs && \
+      npm install --legacy-peer-deps && \
+      echo "Installing dev dependencies..." && \
+      npm install --legacy-peer-deps --save-dev && \
       echo "Building application..." && \
       NODE_OPTIONS="--max-old-space-size=2048" npm run build
     startCommand: npm run start:prod
