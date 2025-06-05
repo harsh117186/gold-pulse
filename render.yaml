@@ -18,6 +18,8 @@ services:
       npm install --legacy-peer-deps --save-dev --verbose && \
       echo "Verifying TypeScript installation..." && \
       npx tsc --version && \
+      echo "Listing node_modules/@types..." && \
+      ls -la node_modules/@types && \
       echo "Building application..." && \
       NODE_OPTIONS="--max-old-space-size=2048" npm run build
     startCommand: npm run start:prod
