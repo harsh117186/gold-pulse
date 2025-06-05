@@ -3,7 +3,13 @@ services:
     name: gold-pulse
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: |
+      echo "Cleaning up..." && \
+      rm -rf node_modules package-lock.json && \
+      echo "Installing dependencies..." && \
+      npm install --no-audit --no-fund --prefer-offline && \
+      echo "Building..." && \
+      npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
