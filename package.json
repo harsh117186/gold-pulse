@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm install -g @nestjs/cli && npm install --no-audit --no-fund --prefer-offline && npx nest build --webpack",
+    "build": "echo 'Installing NestJS CLI...' && npm install -g @nestjs/cli && echo 'Installing dependencies...' && npm install --no-audit --no-fund --prefer-offline && echo 'Building with webpack...' && NODE_OPTIONS='--max-old-space-size=4096' npx nest build --webpack --verbose",
     "start": "node dist/main.js",
     "start:dev": "npx nest start --watch",
     "start:debug": "npx nest start --debug --watch",
