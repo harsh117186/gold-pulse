@@ -6,15 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "preinstall": "npm install -g @nestjs/cli",
-    "install": "npm install --production=false",
-    "build": "nest build --webpack",
+    "build": "npm install -g @nestjs/cli && npm install --no-audit --no-fund --prefer-offline && npx nest build --webpack",
     "start": "node dist/main.js",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:dev": "npx nest start --watch",
+    "start:debug": "npx nest start --debug --watch",
     "start:prod": "node dist/main.js",
     "clean": "rm -rf dist node_modules package-lock.json",
-    "rebuild": "npm run clean && npm install && npm run build"
+    "rebuild": "npm run clean && npm run build"
   },
   "engines": {
     "node": "20.x",
