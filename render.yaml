@@ -4,9 +4,7 @@ services:
     env: node
     nodeVersion: 20.x
     buildCommand: |
-      npm cache clean --force
-      rm -rf node_modules package-lock.json
-      npm install --legacy-peer-deps --force --no-package-lock --no-audit --no-fund
+      npm ci --only=production --legacy-peer-deps --no-audit --no-fund
       npm install -g @nestjs/cli
       npm run build
     startCommand: npm run start:prod
@@ -16,4 +14,12 @@ services:
       - key: PORT
         value: 3000
     healthCheckPath: /
-    installCommand: npm install --legacy-peer-deps --force --no-package-lock --no-audit --no-fund 
+    installCommand: npm ci --only=production --legacy-peer-deps --no-audit --no-fund
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - package.json
+        - package-lock.json
+        - src/**
+        - tsconfig.json
+        - nest-cli.json 
