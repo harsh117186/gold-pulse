@@ -13,7 +13,9 @@ services:
       rm -rf .npm && \
       npm cache clean --force && \
       echo "Installing dependencies..." && \
-      npm install --no-package-lock && \
+      npm install && \
+      echo "Verifying NestJS CLI installation..." && \
+      ls -la node_modules/@nestjs/cli/bin/ && \
       echo "Building application..." && \
       NODE_OPTIONS="--max-old-space-size=2048" npm run build
     startCommand: npm run start:prod
