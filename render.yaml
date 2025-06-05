@@ -5,14 +5,19 @@ services:
     plan: free
     nodeVersion: 18.17.0
     buildCommand: |
+      echo "Starting build process..." && \
       echo "Current Node version:" && node -v && \
       echo "Current NPM version:" && npm -v && \
+      echo "Cleaning npm cache and node_modules..." && \
+      rm -rf node_modules && \
+      rm -rf .npm && \
+      npm cache clean --force && \
       echo "Installing NestJS CLI..." && \
       npm install -g @nestjs/cli@10.0.0 && \
       echo "Installing dependencies..." && \
-      npm install --verbose && \
+      npm install --no-package-lock && \
       echo "Building application..." && \
-      NODE_DEBUG=* nest build --debug
+      NODE_OPTIONS="--max-old-space-size=2048" nest build --webpack false
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
