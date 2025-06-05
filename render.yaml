@@ -4,17 +4,26 @@ services:
     env: node
     nodeVersion: 20.x
     buildCommand: |
+      echo "Starting build process..." && \
+      echo "Cleaning npm cache..." && \
       npm cache clean --force && \
+      echo "Removing node_modules..." && \
       rm -rf node_modules && \
-      npm install --legacy-peer-deps && \
+      echo "Installing dependencies..." && \
+      npm install --verbose --legacy-peer-deps && \
+      echo "Installing NestJS CLI..." && \
       npm install -g @nestjs/cli && \
-      npm run build
+      echo "Building application..." && \
+      NODE_ENV=production npm run build && \
+      echo "Build completed!"
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: NPM_CONFIG_LOGLEVEL
+        value: verbose
     healthCheckPath: /
     autoDeploy: true
     buildFilter:
@@ -24,7 +33,6 @@ services:
         - src/**
         - tsconfig.json
         - nest-cli.json
-        - webpack.config.js
     disk:
       name: gold-pulse-cache
       mountPath: /opt/render/project/src
