@@ -3,7 +3,12 @@ services:
     name: gold-pulse
     env: node
     nodeVersion: 20.x
-    buildCommand: npm install --legacy-peer-deps && npm run build
+    buildCommand: |
+      npm cache clean --force
+      rm -rf node_modules
+      npm install --legacy-peer-deps
+      npm install -g @nestjs/cli
+      npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
