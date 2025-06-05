@@ -5,7 +5,9 @@ services:
     nodeVersion: 20.x
     buildCommand: |
       echo "Starting build..." && \
+      rm -rf node_modules package-lock.json && \
       npm install && \
+      npm run build && \
       echo "Build complete!"
     startCommand: node dist/main.js
     envVars:
