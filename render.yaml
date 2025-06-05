@@ -13,9 +13,11 @@ services:
       rm -rf .npm && \
       npm cache clean --force && \
       echo "Installing dependencies..." && \
-      npm install --legacy-peer-deps && \
+      npm install --legacy-peer-deps --verbose && \
       echo "Installing dev dependencies..." && \
-      npm install --legacy-peer-deps --save-dev && \
+      npm install --legacy-peer-deps --save-dev --verbose && \
+      echo "Verifying TypeScript installation..." && \
+      npx tsc --version && \
       echo "Building application..." && \
       NODE_OPTIONS="--max-old-space-size=2048" npm run build
     startCommand: npm run start:prod
