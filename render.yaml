@@ -3,16 +3,24 @@ services:
     name: gold-pulse
     env: node
     plan: free
+    nodeVersion: 18.17.0
     buildCommand: |
-      npm install -g @nestjs/cli && \
-      npm install && \
-      nest build
+      echo "Current Node version:" && node -v && \
+      echo "Current NPM version:" && npm -v && \
+      echo "Installing NestJS CLI..." && \
+      npm install -g @nestjs/cli@10.0.0 && \
+      echo "Installing dependencies..." && \
+      npm install --verbose && \
+      echo "Building application..." && \
+      NODE_DEBUG=* nest build --debug
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: NODE_DEBUG
+        value: "*"
     healthCheckPath: /
     autoDeploy: true
     buildFilter:
