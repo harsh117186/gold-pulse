@@ -5,8 +5,8 @@ services:
     nodeVersion: 20.x
     buildCommand: |
       npm cache clean --force
-      rm -rf node_modules
-      npm install --legacy-peer-deps
+      rm -rf node_modules package-lock.json
+      npm install --legacy-peer-deps --force
       npm install -g @nestjs/cli
       npm run build
     startCommand: npm run start:prod
@@ -15,4 +15,5 @@ services:
         value: production
       - key: PORT
         value: 3000
-    healthCheckPath: / 
+    healthCheckPath: /
+    installCommand: npm install --legacy-peer-deps --force 

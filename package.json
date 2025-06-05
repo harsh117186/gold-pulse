@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prebuild": "npm install -g @nestjs/cli",
+    "preinstall": "npm install -g @nestjs/cli",
+    "prebuild": "npm install --legacy-peer-deps --force",
     "build": "nest build",
     "postbuild": "npm prune --production",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -42,7 +43,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "ws": "^8.13.0",
-    "puppeteer": "^21.0.0"
+    "puppeteer": "^21.0.0",
+    "@types/node": "^20.3.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -50,14 +52,13 @@
     "@nestjs/testing": "^10.0.0",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
-    "@types/node": "^20.3.1",
     "@types/proper-lockfile": "^4.1.2",
     "@types/supertest": "^2.0.12",
     "@types/ws": "^8.5.5",
     "@types/notp": "^2.0.3",
     "@types/base32-decode": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.11",
-    "@typescript-eslint/parser": "^5.59.11",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -87,5 +88,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "resolutions": {
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0"
   }
 }
