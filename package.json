@@ -56,9 +56,6 @@
     "@types/supertest": "^2.0.12",
     "@types/ws": "^8.5.5",
     "@types/notp": "^2.0.3",
-    "@types/base32-decode": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -89,7 +86,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "resolutions": {
+  "overrides": {
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0"
   }
