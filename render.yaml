@@ -12,8 +12,6 @@ services:
       rm -rf node_modules && \
       rm -rf .npm && \
       npm cache clean --force && \
-      echo "Installing NestJS CLI..." && \
-      npm install -g @nestjs/cli@10.0.0 && \
       echo "Installing dependencies..." && \
       npm install --no-package-lock && \
       echo "Building application..." && \
