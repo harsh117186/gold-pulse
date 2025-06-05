@@ -4,11 +4,10 @@ services:
     env: node
     plan: free
     buildCommand: |
-      echo "Starting build process..." && \
-      npm cache clean --force && \
-      npm install --no-audit --no-fund --prefer-offline && \
-      npm run build && \
-      echo "Build completed successfully!"
+      echo "Step 1: Installing dependencies..." && \
+      npm install --no-audit --no-fund && \
+      echo "Step 2: Running build..." && \
+      npm run build
     startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
