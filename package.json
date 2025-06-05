@@ -7,14 +7,14 @@
   "license": "UNLICENSED",
   "scripts": {
     "preinstall": "npm install -g @nestjs/cli",
-    "install": "npm install -g @nestjs/cli && nest build",
+    "install": "npm ci",
     "build": "nest build",
     "postbuild": "npm prune --production",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -22,7 +22,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm install -g @nestjs/cli && npm run build",
     "clean": "rm -rf dist",
     "rebuild": "npm run clean && npm run build"
   },
@@ -95,7 +94,7 @@
   },
   "cacheDirectories": [
     "node_modules",
-    "dist"
+    ".npm"
   ],
   "config": {
     "unsafe-perm": true

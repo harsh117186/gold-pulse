@@ -5,11 +5,10 @@ services:
     nodeVersion: 20.x
     buildCommand: |
       echo "Starting build..." && \
-      rm -rf node_modules package-lock.json && \
-      npm install && \
+      npm ci && \
       npm run build && \
       echo "Build complete!"
-    startCommand: node dist/main.js
+    startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
@@ -20,7 +19,10 @@ services:
     buildFilter:
       paths:
         - package.json
+        - package-lock.json
         - src/**
+        - tsconfig.json
+        - nest-cli.json
     disk:
       name: gold-pulse-cache
       mountPath: /opt/render/project/src
