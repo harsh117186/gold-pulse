@@ -16,6 +16,8 @@ services:
       npm install --legacy-peer-deps --verbose && \
       echo "Installing dev dependencies..." && \
       npm install --legacy-peer-deps --save-dev --verbose && \
+      echo "Installing type definitions..." && \
+      npm install --save-dev @types/node@20.10.4 @types/jest@29.5.11 --verbose && \
       echo "Verifying TypeScript installation..." && \
       npx tsc --version && \
       echo "Listing node_modules/@types..." && \
