@@ -2,26 +2,36 @@ services:
   - type: web
     name: gold-pulse
     env: node
-    nodeVersion: 20.x
+    plan: free
+    nodeVersion: 20.11.1
     buildCommand: |
-      echo "Starting build..." && \
-      rm -rf node_modules package-lock.json && \
-      npm install && \
-      npm run build && \
-      echo "Build complete!"
-    startCommand: node dist/main.js
+      echo "Starting build process..." && \
+      echo "Current Node version:" && node -v && \
+      echo "Current NPM version:" && npm -v && \
+      echo "Cleaning npm cache and node_modules..." && \
+      rm -rf node_modules && \
+      rm -rf .npm && \
+      npm cache clean --force && \
+      echo "Installing dependencies..." && \
+      npm install --legacy-peer-deps --verbose && \
+      echo "Verifying NestJS CLI installation..." && \
+      npx @nestjs/cli --version && \
+      echo "Building application..." && \
+      npm run build
+    startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: NODE_DEBUG
+        value: "*"
     healthCheckPath: /
     autoDeploy: true
     buildFilter:
       paths:
         - package.json
         - src/**
-    disk:
-      name: gold-pulse-cache
-      mountPath: /opt/render/project/src
-      sizeGB: 1 
+        - tsconfig.json
+        - nest-cli.json
+        - webpack.config.js
