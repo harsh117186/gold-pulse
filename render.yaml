@@ -15,7 +15,7 @@ services:
       echo "Installing dependencies..." && \
       npm install --legacy-peer-deps --verbose && \
       echo "Verifying NestJS CLI installation..." && \
-      npx nest --version && \
+      npx @nestjs/cli --version && \
       echo "Building application..." && \
       npm run build
     startCommand: npm run start:prod
