@@ -10,9 +10,11 @@ declare module 'proper-lockfile' {
   function unlock(file: string, options?: LockOptions): Promise<void>;
   function check(file: string, options?: LockOptions): Promise<boolean>;
 
-  export = {
-    lock,
-    unlock,
-    check
+  const lockfile: {
+    lock: typeof lock;
+    unlock: typeof unlock;
+    check: typeof check;
   };
+
+  export default lockfile;
 } 

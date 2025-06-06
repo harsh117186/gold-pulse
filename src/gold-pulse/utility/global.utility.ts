@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as lockfile from 'proper-lockfile';
+import lockfile from 'proper-lockfile';
 import { FetchImageResponseDto } from '../dto/fetch-image.response.dto';
 import { Logger } from '@nestjs/common';
 import { FetchLivePriceResponseDto } from '../dto/fetch-live-price.response.dto';
