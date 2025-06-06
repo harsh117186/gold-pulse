@@ -4,14 +4,12 @@ import { LivePriceController } from './controller/live-price.controller';
 import { UpdateMcxTokenController } from './controller/update-mcx-token.controller';
 import { FetchMcxTokensController } from './controller/fetch-mcx-tokens.controller';
 import { MarketPriceController } from './controller/market-price.controller';
-import { ScraperController } from './controller/scraper.controller';
 import { AngelOneInteractionServiceImpl } from './interaction/angel-one.interaction.service.impl';
 import { LivePriceServiceImpl } from './service/live-price.service.impl';
 import { CronServiceImpl } from './service/cron.service.impl';
 import { FetchValidGoldAndSilverTokenServiceImpl } from './service/fetch-valid-goldAndSilver-token.service.impl';
 import { FetchMCXFuturesService } from './service/fetch-mcx-futures.service.impl';
 import { MarketPriceService } from './service/market-price.service';
-import { ScraperWebSocketService } from './service/scraper-ws.service';
 import { PriceStorageService } from './service/price-storage.service';
 
 @Module({
@@ -22,8 +20,7 @@ import { PriceStorageService } from './service/price-storage.service';
     LivePriceController,
     UpdateMcxTokenController,
     FetchMcxTokensController,
-    MarketPriceController,
-    ScraperController
+    MarketPriceController
   ],
   providers: [
     LivePriceServiceImpl,
@@ -32,7 +29,6 @@ import { PriceStorageService } from './service/price-storage.service';
     FetchValidGoldAndSilverTokenServiceImpl,
     FetchMCXFuturesService,
     MarketPriceService,
-    ScraperWebSocketService,
     PriceStorageService
   ],
   exports: [MarketPriceService]
