@@ -8,10 +8,10 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "nest build",
+    "build": "nest build --webpack",
     "start": "node dist/main.js",
     "start:prod": "node dist/main.js",
-    "heroku-postbuild": "npm install --include=dev && npm run build"
+    "heroku-postbuild": "npm install --include=dev && npm run build && ls -la dist/"
   },
   "engines": {
     "node": "20.11.1",
