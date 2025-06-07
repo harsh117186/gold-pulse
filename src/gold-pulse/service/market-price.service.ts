@@ -344,52 +344,97 @@ export class MarketPriceService {
 
   async fetchAllMarketPrices(): Promise<MarketPriceResponseDto> {
     try {
-      const [
-        arihantData,
-        jkSonsData,
-        aaravData,
-        kakaData,
-        karunaData
-      ] = await Promise.all([
-        this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantgold'),
-        this.fetchData('https://bcast.jksons.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/jksonsgold'),
-        this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravgold'),
-        this.fetchData('https://bcast.kakabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kakagold'),
-        this.fetchData('https://bcast.karunabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/karunagold')
-      ]);
-
-      const [
-        aaravSilver,
-        arihantSilver,
-        mantraGold,
-        aaravPlatinum,
-        arihantPlatinum,
-        aaravPalladium,
-        arihantPalladium
-      ] = await Promise.all([
-        this.fetchAaravSilver(),
-        this.fetchArihantSilver(),
-        this.fetchMantraGold(),
-        this.fetchAaravPlatinum(),
-        this.fetchArihantPlatinum(),
-        this.fetchAaravPalladium(),
-        this.fetchArihantPalladium()
-      ]);
-
-      return {
-        arihantPrices: this.parseArihantData(arihantData),
-        jkSonsPrices: this.parseJKSonsData(jkSonsData),
-        aaravPrices: this.parseAaravData(aaravData),
-        kakaPrices: this.parseKakaData(kakaData),
-        karunaPrices: this.parseKarunaData(karunaData),
-        aaravSilver,
-        arihantSilver,
-        mantraGold,
-        aaravPlatinum,
-        arihantPlatinum,
-        aaravPalladium,
-        arihantPalladium
+      // Initialize empty arrays for all price data
+      const result: MarketPriceResponseDto = {
+        arihantPrices: [],
+        jkSonsPrices: [],
+        aaravPrices: [],
+        kakaPrices: [],
+        karunaPrices: [],
+        aaravSilver: [],
+        arihantSilver: [],
+        mantraGold: null,
+        aaravPlatinum: [],
+        arihantPlatinum: [],
+        aaravPalladium: [],
+        arihantPalladium: []
       };
+
+      // Fetch gold prices from all vendors
+      try {
+        const [arihantData, jkSonsData, aaravData, kakaData, karunaData] = await Promise.allSettled([
+          this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantgold'),
+          this.fetchData('https://bcast.jksons.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/jksonsgold'),
+          this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravgold'),
+          this.fetchData('https://bcast.kakagold.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kaka'),
+          this.fetchData('https://bcast.karunabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/karunagold')
+        ]);
+
+        if (arihantData.status === 'fulfilled') {
+          result.arihantPrices = this.parseArihantData(arihantData.value);
+        }
+        if (jkSonsData.status === 'fulfilled') {
+          result.jkSonsPrices = this.parseJKSonsData(jkSonsData.value);
+        }
+        if (aaravData.status === 'fulfilled') {
+          result.aaravPrices = this.parseAaravData(aaravData.value);
+        }
+        if (kakaData.status === 'fulfilled') {
+          result.kakaPrices = this.parseKakaData(kakaData.value);
+        }
+        if (karunaData.status === 'fulfilled') {
+          result.karunaPrices = this.parseKarunaData(karunaData.value);
+        }
+      } catch (error) {
+        this.logger.error('Error fetching gold prices:', error.message);
+      }
+
+      // Fetch other commodities
+      try {
+        const [
+          aaravSilver,
+          arihantSilver,
+          mantraGold,
+          aaravPlatinum,
+          arihantPlatinum,
+          aaravPalladium,
+          arihantPalladium
+        ] = await Promise.allSettled([
+          this.fetchAaravSilver(),
+          this.fetchArihantSilver(),
+          this.fetchMantraGold(),
+          this.fetchAaravPlatinum(),
+          this.fetchArihantPlatinum(),
+          this.fetchAaravPalladium(),
+          this.fetchArihantPalladium()
+        ]);
+
+        if (aaravSilver.status === 'fulfilled') {
+          result.aaravSilver = aaravSilver.value;
+        }
+        if (arihantSilver.status === 'fulfilled') {
+          result.arihantSilver = arihantSilver.value;
+        }
+        if (mantraGold.status === 'fulfilled') {
+          result.mantraGold = mantraGold.value;
+        }
+        if (aaravPlatinum.status === 'fulfilled') {
+          result.aaravPlatinum = aaravPlatinum.value;
+        }
+        if (arihantPlatinum.status === 'fulfilled') {
+          result.arihantPlatinum = arihantPlatinum.value;
+        }
+        if (aaravPalladium.status === 'fulfilled') {
+          result.aaravPalladium = aaravPalladium.value;
+        }
+        if (arihantPalladium.status === 'fulfilled') {
+          result.arihantPalladium = arihantPalladium.value;
+        }
+      } catch (error) {
+        this.logger.error('Error fetching other commodities:', error.message);
+      }
+
+      return result;
     } catch (error) {
       this.logger.error('Failed to fetch market prices:', error.message);
       throw error;
