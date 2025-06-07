@@ -20,6 +20,7 @@ export interface SilverCostingDto {
 }
 
 export interface MantraGoldDto {
+  source: string;
   product: string;
   buy: string;
   sell: string;

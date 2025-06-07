@@ -234,6 +234,7 @@ export class MarketPriceService {
       const [low, buy, sell, high] = numericValues.slice(-4);
 
       return {
+        source: 'Mantra',
         product: 'GOLD 999',
         buy: buy || '0',
         sell: sell || '0',
