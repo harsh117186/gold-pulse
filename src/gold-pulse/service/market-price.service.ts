@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseMarketPriceDto, MarketPriceResponseDto, SilverCostingDto, MantraGoldDto } from '../dto/market-price.dto';
+import { BaseMarketPriceDto, MarketPriceResponseDto, SilverCostingDto, MantraGoldDto, PlatinumCostingDto, PalladiumCostingDto } from '../dto/market-price.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 
@@ -246,26 +246,134 @@ export class MarketPriceService {
     }
   }
 
+  private async fetchAaravPlatinum(): Promise<PlatinumCostingDto[]> {
+    try {
+      const data = await this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravplatinum');
+      const lines: string[] = data.split('\n').map((line: string) => line.trim());
+      
+      return lines
+        .filter((line: string) => line.includes('PLATINUM'))
+        .map((line: string) => {
+          const parts = line.split(/\s+/);
+          const [costing, buy, sell, high, low] = parts.slice(-5);
+
+          return {
+            costing,
+            buy,
+            sell,
+            high,
+            low
+          };
+        });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  private async fetchArihantPlatinum(): Promise<PlatinumCostingDto[]> {
+    try {
+      const data = await this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantplatinum');
+      const lines: string[] = data.split('\n').map((line: string) => line.trim());
+      
+      return lines
+        .filter((line: string) => line.includes('PLATINUM'))
+        .map((line: string) => {
+          const parts = line.split(/\s+/);
+          const [costing, buy, sell, high, low] = parts.slice(-5);
+
+          return {
+            costing,
+            buy,
+            sell,
+            high,
+            low
+          };
+        });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  private async fetchAaravPalladium(): Promise<PalladiumCostingDto[]> {
+    try {
+      const data = await this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravpalladium');
+      const lines: string[] = data.split('\n').map((line: string) => line.trim());
+      
+      return lines
+        .filter((line: string) => line.includes('PALLADIUM'))
+        .map((line: string) => {
+          const parts = line.split(/\s+/);
+          const [costing, buy, sell, high, low] = parts.slice(-5);
+
+          return {
+            costing,
+            buy,
+            sell,
+            high,
+            low
+          };
+        });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  private async fetchArihantPalladium(): Promise<PalladiumCostingDto[]> {
+    try {
+      const data = await this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantpalladium');
+      const lines: string[] = data.split('\n').map((line: string) => line.trim());
+      
+      return lines
+        .filter((line: string) => line.includes('PALLADIUM'))
+        .map((line: string) => {
+          const parts = line.split(/\s+/);
+          const [costing, buy, sell, high, low] = parts.slice(-5);
+
+          return {
+            costing,
+            buy,
+            sell,
+            high,
+            low
+          };
+        });
+    } catch (error) {
+      return [];
+    }
+  }
+
   async fetchAllMarketPrices(): Promise<MarketPriceResponseDto> {
     try {
       const [
-        arihantData, 
-        jkSonsData, 
-        aaravData, 
-        kakaData, 
-        karunaData,
+        arihantData,
+        jkSonsData,
+        aaravData,
+        kakaData,
+        karunaData
+      ] = await Promise.all([
+        this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantgold'),
+        this.fetchData('https://bcast.jksons.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/jksonsgold'),
+        this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravgold'),
+        this.fetchData('https://bcast.kakabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kakagold'),
+        this.fetchData('https://bcast.karunabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/karunagold')
+      ]);
+
+      const [
         aaravSilver,
         arihantSilver,
-        mantraGold
+        mantraGold,
+        aaravPlatinum,
+        arihantPlatinum,
+        aaravPalladium,
+        arihantPalladium
       ] = await Promise.all([
-        this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihant'),
-        this.fetchData('http://bcast.jksons.in:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/jksons'),
-        this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aarav'),
-        this.fetchData('https://bcast.kakagold.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kaka'),
-        this.fetchData('https://bcast.arhambullion.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arham'),
         this.fetchAaravSilver(),
         this.fetchArihantSilver(),
-        this.fetchMantraGold()
+        this.fetchMantraGold(),
+        this.fetchAaravPlatinum(),
+        this.fetchArihantPlatinum(),
+        this.fetchAaravPalladium(),
+        this.fetchArihantPalladium()
       ]);
 
       return {
@@ -276,7 +384,11 @@ export class MarketPriceService {
         karunaPrices: this.parseKarunaData(karunaData),
         aaravSilver,
         arihantSilver,
-        mantraGold
+        mantraGold,
+        aaravPlatinum,
+        arihantPlatinum,
+        aaravPalladium,
+        arihantPalladium
       };
     } catch (error) {
       this.logger.error('Failed to fetch market prices:', error.message);

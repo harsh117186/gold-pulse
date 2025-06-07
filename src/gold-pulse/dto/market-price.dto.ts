@@ -27,6 +27,22 @@ export interface MantraGoldDto {
   low: string;
 }
 
+export interface PlatinumCostingDto {
+  costing: string;
+  buy: string;
+  sell: string;
+  high?: string;
+  low?: string;
+}
+
+export interface PalladiumCostingDto {
+  costing: string;
+  buy: string;
+  sell: string;
+  high?: string;
+  low?: string;
+}
+
 export interface MarketPriceResponseDto {
   arihantPrices: BaseMarketPriceDto[];
   jkSonsPrices: BaseMarketPriceDto[];
@@ -36,4 +52,8 @@ export interface MarketPriceResponseDto {
   aaravSilver: SilverCostingDto[];
   arihantSilver: SilverCostingDto[];
   mantraGold: MantraGoldDto | null;
+  aaravPlatinum: PlatinumCostingDto[];
+  arihantPlatinum: PlatinumCostingDto[];
+  aaravPalladium: PalladiumCostingDto[];
+  arihantPalladium: PalladiumCostingDto[];
 } 
