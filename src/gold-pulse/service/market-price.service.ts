@@ -195,6 +195,8 @@ export class MarketPriceService {
           const [costing, buy, sell, high, low] = parts.slice(-5);
 
           return {
+            source: 'Arihant',
+            product: 'SILVER (PREMIUM)',
             costing,
             buy,
             sell,
