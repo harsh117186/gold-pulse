@@ -196,7 +196,7 @@ export class MarketPriceService {
 
           return {
             source: 'Arihant',
-            product: 'SILVER (PREMIUM)',
+            product: 'SILVER (PREMIUM',
             costing,
             buy,
             sell,
