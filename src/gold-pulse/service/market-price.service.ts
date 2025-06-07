@@ -91,13 +91,12 @@ export class MarketPriceService {
       )
       .map(line => {
         const parts = line.split(/\s+/);
-        const location = parts.slice(1, parts.length - 4).join(' ');
+        const product = parts.slice(1, parts.length - 4).join(' ');
         const [buy, sell, high, low] = parts.slice(-4).map(Number);
 
         const price: BaseMarketPriceDto = {
           source: 'Aarav',
-          product: 'GOLD 999 IMP',
-          location,
+          product,
           sell,
           buy,
           high,
@@ -114,13 +113,12 @@ export class MarketPriceService {
       .map(line => {
         const parts = line.split(/\s+/).filter(part => part.trim() !== '');
         if (parts.length >= 5) {
-          const location = parts.slice(1, parts.length - 4).join(' ');
+          const product = parts.slice(1, parts.length - 4).join(' ');
           const [buy, sell, high, low] = parts.slice(-4).map(Number);
 
           const price: BaseMarketPriceDto = {
             source: 'Kaka',
-            product: 'GOLD 999 IMPORTED',
-            location,
+            product,
             sell,
             buy,
             high,
