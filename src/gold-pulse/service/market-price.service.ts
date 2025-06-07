@@ -87,8 +87,7 @@ export class MarketPriceService {
     const lines = data.split('\n').map(line => line.trim());
     return lines
       .filter(line => 
-        line.includes('GOLD 999 IMP (AHM)') || 
-        line.includes('GOLD 999 IMP (RAJKOT)')
+        line.includes('GOLD 999')
       )
       .map(line => {
         const parts = line.split(/\s+/);
@@ -111,7 +110,7 @@ export class MarketPriceService {
   private parseKakaData(data: string): BaseMarketPriceDto[] {
     const lines = data.split('\n').filter(line => line.trim() !== '');
     return lines
-      .filter(line => line.includes('GOLD 999 IMPORTED'))
+      .filter(line => line.includes('GOLD 999 IMP WITH GST'))
       .map(line => {
         const parts = line.split(/\s+/).filter(part => part.trim() !== '');
         if (parts.length >= 5) {
@@ -138,7 +137,7 @@ export class MarketPriceService {
     const lines = data.split('\n').map(line => line.trim());
     return lines
       .filter(line =>
-        line.includes('GOLD 999 IMP SAM') ||
+        line.includes('GOLD 999') ||
         line.includes('SILVER PETI')
       )
       .map(line => {
