@@ -141,9 +141,11 @@ export class MarketPriceService {
       .map(line => {
         const parts = line.split(/\s+/);
         const product = parts.slice(1, parts.length - 5).join(' ');
-        const [buy, sell, high, low] = parts.slice(-5, -1).map(Number);
+        let [buy, sell, high, low] = parts.slice(-5, -1).map(Number);
         const status = parts[parts.length - 1];
-
+        if(product.includes('GOLD 999 BIS')){
+          sell = high
+        }
         const price: BaseMarketPriceDto = {
           source: 'Karuna',
           product,
