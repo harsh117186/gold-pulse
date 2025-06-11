@@ -87,7 +87,7 @@ export class MarketPriceService {
     const lines = data.split('\n').map(line => line.trim());
     return lines
       .filter(line => 
-        line.includes('GOLD 999')
+        line.includes('GOLD 999') ||  line.includes('SILVER 999  (AHM) PETI 30kg')
       )
       .map(line => {
         const parts = line.split(/\s+/);
