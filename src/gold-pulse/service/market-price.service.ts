@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';More actions
 import { BaseMarketPriceDto, MarketPriceResponseDto, SilverCostingDto, MantraGoldDto } from '../dto/market-price.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
@@ -30,7 +30,7 @@ export class MarketPriceService {
   private parseArihantData(data: string): BaseMarketPriceDto[] {
     const lines = data.split('\n').filter(line => line.trim() !== '');
     const regex = /(\d+)\s+([A-Za-z0-9\s\(\)\-]+)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)/;
-    
+
     return lines
       .map(line => {
         const match = line.match(regex);
@@ -87,6 +87,7 @@ export class MarketPriceService {
     const lines = data.split('\n').map(line => line.trim());
     return lines
       .filter(line => 
+        line.includes('GOLD 999')
         line.includes('GOLD 999') ||  line.includes('SILVER 999  (AHM) PETI 30kg')
       )
       .map(line => {
@@ -159,11 +160,37 @@ export class MarketPriceService {
       });
   }
 
+  private async fetchAaravSilver(): Promise<SilverCostingDto[]> {
+    try {
+      const data = await this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravsilver');
+      const lines: string[] = data.split('\n').map((line: string) => line.trim());
+
+      return lines
+        .filter((line: string) => line.includes('SILVER  (AHM) PETI 30Kg'))
+        .map((line: string) => {
+          const parts = line.split(/\s+/);
+          const [costing, buy, sell, high, low] = parts.slice(-5);
+
+          return {
+            source: 'Aarav',
+            product: 'SILVER PRE',
+            costing,
+            buy,
+            sell,
+            high,
+            low
+          };
+        });
+    } catch (error) {
+      return [];
+    }
+  }
+
   private async fetchArihantSilver(): Promise<SilverCostingDto[]> {
     try {
       const data = await this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantsilver');
       const lines: string[] = data.split('\n').map((line: string) => line.trim());
-      
+
       return lines
         .filter((line: string) => line.includes('SILVER (PREMIUM)'))
         .map((line: string) => {
@@ -189,13 +216,13 @@ export class MarketPriceService {
     try {
       const data = await this.fetchData('http://bcast.mantragold.net:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/mantragold');
       const lines: string[] = data.split('\n').map((line: string) => line.trim());
-      
+
       const goldGstLine = lines.find((line: string) => line.includes('GOLD 999 WITH GST'));
       if (!goldGstLine) return null;
 
       // Split by whitespace and filter out empty strings
       const parts = goldGstLine.split(/\s+/).filter(part => part.trim() !== '');
-      
+
       // Find all numeric values in the line, excluding "999" which is part of the product name
       const numericValues = parts
         .filter(part => !isNaN(Number(part)) && part.length > 0 && part !== '999')
@@ -242,7 +269,7 @@ export class MarketPriceService {
         this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aarav'),
         this.fetchData('https://bcast.kakagold.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kaka'),
         this.fetchData('https://bcast.arhambullion.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arham'),
-        
+        this.fetchAaravSilver(),
         this.fetchArihantSilver(),
         this.fetchMantraGold()
       ]);
@@ -253,7 +280,7 @@ export class MarketPriceService {
         aaravPrices: this.parseAaravData(aaravData),
         kakaPrices: this.parseKakaData(kakaData),
         karunaPrices: this.parseKarunaData(karunaData),
-        
+        aaravSilver,
         arihantSilver,
         mantraGold
       };
