@@ -242,7 +242,7 @@ export class MarketPriceService {
         this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aarav'),
         this.fetchData('https://bcast.kakagold.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kaka'),
         this.fetchData('https://bcast.arhambullion.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arham'),
-        this.fetchAaravSilver(),
+        
         this.fetchArihantSilver(),
         this.fetchMantraGold()
       ]);
@@ -253,7 +253,7 @@ export class MarketPriceService {
         aaravPrices: this.parseAaravData(aaravData),
         kakaPrices: this.parseKakaData(kakaData),
         karunaPrices: this.parseKarunaData(karunaData),
-        aaravSilver,
+        
         arihantSilver,
         mantraGold
       };
