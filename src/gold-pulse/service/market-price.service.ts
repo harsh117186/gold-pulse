@@ -172,7 +172,7 @@ export class MarketPriceService {
 
           return {
             source: 'Aarav',
-            product: 'SILVER (PREMIUM)',
+            product: 'SILVER PRE',
             costing,
             buy,
             sell,
