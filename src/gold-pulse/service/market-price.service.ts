@@ -159,32 +159,6 @@ export class MarketPriceService {
       });
   }
 
-  private async fetchAaravSilver(): Promise<SilverCostingDto[]> {
-    try {
-      const data = await this.fetchData('https://bcast.aaravbullion.in/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/aaravsilver');
-      const lines: string[] = data.split('\n').map((line: string) => line.trim());
-      
-      return lines
-        .filter((line: string) => line.includes('SILVER  (AHM) PETI 30Kg'))
-        .map((line: string) => {
-          const parts = line.split(/\s+/);
-          const [costing, buy, sell, high, low] = parts.slice(-5);
-
-          return {
-            source: 'Aarav',
-            product: 'SILVER PRE',
-            costing,
-            buy,
-            sell,
-            high,
-            low
-          };
-        });
-    } catch (error) {
-      return [];
-    }
-  }
-
   private async fetchArihantSilver(): Promise<SilverCostingDto[]> {
     try {
       const data = await this.fetchData('https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihantsilver');
