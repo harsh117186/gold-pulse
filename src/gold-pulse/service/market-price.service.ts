@@ -165,7 +165,7 @@ export class MarketPriceService {
       const lines: string[] = data.split('\n').map((line: string) => line.trim());
 
       return lines
-        .filter((line: string) => line.includes('SILVER  (AHM) PETI 30Kg'))
+        .filter((line: string) => line.includes('harsh'))
         .map((line: string) => {
           const parts = line.split(/\s+/);
           const [costing, buy, sell, high, low] = parts.slice(-5);
