@@ -34,7 +34,7 @@ export class MarketPriceService {
     return lines
       .map(line => {
         const match = line.match(regex);
-        if (match && match[2].toUpperCase().includes('GOLD 999')) {
+        if (match && (match[2].toUpperCase().includes('GOLD 999')|| match[2].toUpperCase().includes('GOLD 995'))) {
           const price: BaseMarketPriceDto = {
             source: 'Arihant',
             product: match[2].trim(),
@@ -109,7 +109,7 @@ export class MarketPriceService {
   private parseKakaData(data: string): BaseMarketPriceDto[] {
     const lines = data.split('\n').filter(line => line.trim() !== '');
     return lines
-      .filter(line => line.includes('GOLD 999 IMP WITH GST'))
+      .filter(line => line.includes('GOLD 999 IMP WITH GST')|| line.includes('GOLD 995 WITH GST'))
       .map(line => {
         const parts = line.split(/\s+/).filter(part => part.trim() !== '');
         if (parts.length >= 5) {
@@ -216,7 +216,7 @@ export class MarketPriceService {
       const data = await this.fetchData('http://bcast.mantragold.net:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/mantragold');
       const lines: string[] = data.split('\n').map((line: string) => line.trim());
 
-      const goldGstLine = lines.find((line: string) => line.includes('GOLD 999 WITH GST'));
+      const goldGstLine = lines.find((line: string) => line.includes('GOLD 999 WITH GST')|| line.includes('GOLD 995 WITH GST'));
       if (!goldGstLine) return null;
 
       // Split by whitespace and filter out empty strings
