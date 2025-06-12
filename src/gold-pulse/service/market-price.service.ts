@@ -34,7 +34,7 @@ export class MarketPriceService {
     return lines
       .map(line => {
         const match = line.match(regex);
-        if (match && (match[2].toUpperCase().includes('GOLD 999')|| match[2].toUpperCase().includes('GOLD 995'))) {
+        if (match && (match[2].toUpperCase().includes('GOLD 999')|| match[2].toUpperCase().includes('GOLD 995 WITH GST'))) {
           const price: BaseMarketPriceDto = {
             source: 'Arihant',
             product: match[2].trim(),
@@ -216,7 +216,7 @@ export class MarketPriceService {
       const data = await this.fetchData('http://bcast.mantragold.net:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/mantragold');
       const lines: string[] = data.split('\n').map((line: string) => line.trim());
 
-      const goldGstLine = lines.find((line: string) => line.includes('GOLD 999 WITH GST') || line.includes('GOLD 995 WITH GST'));
+      const goldGstLine = lines.find((line: string) => line.includes('GOLD 999 WITH GST') || line.includes('GOLD 995'));
 
       if (!goldGstLine) return null;
 
